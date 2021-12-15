@@ -1,6 +1,4 @@
-//
-// Created by Saxion on 10/12/2018.
-//
+
 
 #ifndef ALGOS_ALGOS_H
 #define ALGOS_ALGOS_H
@@ -18,35 +16,54 @@ namespace saxion {
         // 1 point
         template<typename _Iter>
         auto has_all_tasks_assigned(_Iter begin, _Iter end) const noexcept {
-            // todo
             (void)begin; (void)end;
             // returns true if all the tasks in collection have a person assigned to them
-            return false;
+
+            return std::all_of(begin, end, [](const task& t) {
+                return !t.assignees.empty();
+            });
         }
 
         // 1 point
         template <typename _Iter>
         bool has_task_with_deadline_afer(_Iter begin, _Iter end, const task::time_type& deadline) const noexcept{
-            // todo
             (void)begin; (void)end; (void)deadline;
             // returns true if any of the tasks in collection have a deadline after <deadline>
-            return false;
+
+            return std::any_of(begin, end, [deadline](const task& t) {
+                return t.deadline > deadline;
+            });
+            //return false;
         }
 
         // 3 points
         template <typename _Iter>
         auto remove_asignee_from_all(_Iter begin, _Iter end, const std::string& person) const noexcept{
-            // todo
+            // todo vragen naar deze functie
             (void)begin; (void)end; (void)person;
             // transforms the tasks (in-place) by removing <person> from the assignees in all the tasks
+
+
+//            auto should_remove = [&](const task& t){
+//                auto index = std::distance(
+//                        begin, std::find(begin, end, person)
+//                        );
+//            };
+//            const task t{};
+//            t.(std::remove_if(begin, end, should_remove), end); //?????
         }
 
         // 1 point
         template <typename _Iter>
         auto extend_deadlines(_Iter begin, _Iter end, int priority, const task::time_difference_type& extension) const noexcept{
-            // todo
             (void)begin; (void)end; (void)priority; (void)extension;
             // transforms the tasks with priority <prio> (in-place) by extending their deadlines with <extension>
+
+            std::for_each(begin, end, [priority, extension](task& t) {
+                if(t.priority == priority) {
+                    t.deadline.operator+=(extension);
+                }
+            });
         }
 
         // 1 point
@@ -55,7 +72,9 @@ namespace saxion {
             // todo
             (void)begin; (void)end; (void)deadline;
             // returns the count of tasks with a deadline before <deadline>
-            return -1;
+            return std::count_if(begin, end, [deadline](const task& t){
+                return t.deadline < deadline;
+            });
         }
 
         // 2 points
@@ -66,7 +85,20 @@ namespace saxion {
             // adds <person> to assignees of the task with id <id>
             // returns false if such a task doesn't exist or if it already has <person> assigned to it
             // otherwise returns true
-            return false;
+
+//            for (auto t = begin; t != end; ++t) {
+//                if (t->id == id){
+//                    if(t->assignees != person) {
+//                        //add assignee to the task
+//                        //return true
+//                    }
+//                    //return false
+//                }
+//            }
+
+            std::find_if(begin, end, [&](const task& t){return t.id == id;});
+
+            //return false;
         }
 
         // 1 point
