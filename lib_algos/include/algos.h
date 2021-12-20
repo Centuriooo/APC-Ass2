@@ -1,5 +1,4 @@
 
-
 #ifndef ALGOS_ALGOS_H
 #define ALGOS_ALGOS_H
 
@@ -96,9 +95,9 @@ namespace saxion {
 //                }
 //            }
 
-            std::find_if(begin, end, [&](const task& t){return t.id == id;});
+//            std::find_if(begin, end, [&](const task& t){return t.id == id;});
 
-            //return false;
+            return false;
         }
 
         // 1 point
@@ -106,8 +105,10 @@ namespace saxion {
         std::vector<task> get_tasks_with_priority(_Iter begin, _Iter end, int priority) const noexcept{
             // todo
             (void)begin; (void)end; (void)priority;
-            // returns a vector with copies of tasks with priority <priority>
-            return std::vector<task>();
+            std::vector<task> with_prio{};
+            std::copy_if(begin, end, std::back_inserter(with_prio), [priority](const task& t){return t.priority == priority;});
+
+            return with_prio;
         }
 
         // 2 points move_if ;)
